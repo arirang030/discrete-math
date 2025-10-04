@@ -82,8 +82,19 @@ def getMatrixInverseWithGaussJordan(m):
 
   return [r[n:] for r in aug]
 
+# 역행렬을 이용한 연립방정식 해 구하기
+def solveLinearSystem(inverse, y):
+  n = len(inverse)
+  x = []
+  for i in range(n):
+    res = 0
+    for j in range(n):
+      res += inverse[i][j] * y[j]
+    x.append(res)
+  return x
+
 # 행렬 출력
-def print_matrix(matrix):
+def printMatrix(matrix):
   for row in matrix:
     print(" ".join(f"{elem:8.2f}" for elem in row))
 
@@ -106,16 +117,24 @@ def main():
       m.append(row_values)
       break
 
+  while True:
+    y_input = input("각 행에 대한 출력값을 입력하세요(각 출력값은 공백으로 구분): ")
+    y = [float(x) for x in y_input.split()]
+    if len(y) != k:
+      print(f"입력 오류: 정확히 {k}개의 값을 입력해야 합니다.")
+      continue
+    break
+
   if has_inverse(m):
     # 행렬식을 이용한 역행렬 계산
     inverseWithDeterminant = getMatrixInverseWithDeterminant(m)
     print("행렬식을 이용한 역행렬")
-    print_matrix(inverseWithDeterminant)
+    printMatrix(inverseWithDeterminant)
 
     # 가우스-조던 소거법을 이용한 역행렬 계산
     inverseWithGaussJordan = getMatrixInverseWithGaussJordan(m)
     print("가우스-조던 소거법을 이용한 역행렬")
-    print_matrix(inverseWithGaussJordan)
+    printMatrix(inverseWithGaussJordan)
 
     # 두 결과가 동일한지 비교
     isEqual = True
@@ -129,6 +148,9 @@ def main():
       print("같다.")
     else:
       print("다르다.")
+    
+    # 역행렬을 이용한 연립방정식 해 구하기
+    print(f"역행렬을 이용한 연립방정식 해: {solveLinearSystem(inverseWithDeterminant, y)}")
 
 if __name__ == "__main__":
   main()
