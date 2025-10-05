@@ -14,6 +14,7 @@ def getDeterminant(m):
 # 역행렬 존재 여부 판단
 def has_inverse(m):
   determinant = getDeterminant(m)
+  print(f"행렬의 행렬식은 {determinant}입니다.")
   if abs(determinant) < 1e-10:
     print('행렬식이 0 이므로 역행렬 계산이 불가능합니다.')
     return False
